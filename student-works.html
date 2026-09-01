@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Works | ELJCMASHS</title>
+  <link rel="icon" type="image/png" href="images/logo.png.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-wrap">
+      <a class="brand" href="index.html" aria-label="ELJ home">
+        <img src="images/logo.png.png" alt="ELJ logo" class="brand-logo" />
+        <div>
+          <span class="brand-small">EUGENIO M. LOPEZ JR. CENTER FOR MEDIA ARTS SENIOR HIGH SCHOOL</span>
+          <span class="brand-title">OFFICIAL WEBSITE</span>
+        </div>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav id="siteNav" class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="about.html">About</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+      <a href="student-works.html">Student Works</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section page-shell">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> STUDENT WORKS</p>
+        <h2>Creative work from our students.</h2>
+        <p>Approved student projects are featured here. Each submission is reviewed before it appears publicly on the site.</p>
+      </div>
+
+      <div class="works-actions">
+        <a class="button button-primary" href="upload-work.html">Submit a work</a>
+      </div>
+
+      <div id="worksGrid" class="works-grid"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    function getClientId() {
+      const stored = localStorage.getItem('eljLikeClientId');
+      if (stored) return stored;
+
+      const newId = `client-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem('eljLikeClientId', newId);
+      return newId;
+    }
+
+    async function loadWorks() {
+      const grid = document.getElementById('worksGrid');
+      try {
+        const response = await fetch('/api/works');
+        const works = await response.json();
+
+        if (!works.length) {
+          grid.innerHTML = '<div class="empty-state">No approved student works yet.</div>';
+          return;
+        }
+
+        const groupedWorks = works.reduce((groups, work) => {
+          const medium = work.category || 'Other';
+          groups[medium] = groups[medium] || [];
+          groups[medium].push(work);
+          return groups;
+        }, {});
+
+        const sections = Object.entries(groupedWorks).map(([medium, items]) => {
+          const cards = items.map((work) => {
+            const mediaUrl = work.thumbnailUrl || work.fileUrl || '';
+            const isImage = /\.(png|jpe?g|gif|webp|svg)$/i.test(mediaUrl || '');
+            const isLinkMedia = work.mediaType === 'youtube' || work.mediaType === 'link';
+
+            let media = '';
+            if (isLinkMedia && (work.thumbnailUrl || work.fileUrl)) {
+              media = `<img src="${work.thumbnailUrl || work.fileUrl}" alt="${work.title}" loading="lazy" />`;
+            } else if (isImage) {
+              media = `<img src="${work.fileUrl}" alt="${work.title}" loading="lazy" />`;
+            } else {
+              media = `<video controls src="${work.fileUrl}"></video>`;
+            }
+
+            const watchLink = work.fileUrl
+              ? `<a class="watch-link" href="${work.fileUrl}" target="_blank" rel="noreferrer">Watch</a>`
+              : '';
+
+            return `
+              <details class="work-card" data-id="${work.id}">
+                <summary>
+                  <div class="work-media">${media}</div>
+                  <div class="work-summary">
+                    <strong>${work.title}</strong>
+                    <span>${work.name}</span>
+                  </div>
+                </summary>
+                <div class="work-details">
+                  <p>${work.description}</p>
+                  <div class="work-footer">
+                    <span>${work.category}</span>
+                    <span>${work.createdAt ? new Date(work.createdAt).toLocaleDateString() : ''}</span>
+                  </div>
+                  <div class="work-actions">
+                    ${watchLink}
+                    <button class="like-button" type="button" data-id="${work.id}" aria-label="Like ${work.title}">
+                      <span>♥</span>
+                      <span class="like-count">${Number(work.likes || 0)}</span>
+                    </button>
+                  </div>
+                </div>
+              </details>
+            `;
+          }).join('');
+
+          return `
+            <section class="medium-section">
+              <div class="medium-header">
+                <span class="medium-label">${medium}</span>
+                <span class="medium-count">${items.length} work${items.length > 1 ? 's' : ''}</span>
+              </div>
+              <div class="works-grid">${cards}</div>
+            </section>
+          `;
+        }).join('');
+
+        grid.innerHTML = sections;
+
+        document.querySelectorAll('.like-button').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const id = button.dataset.id;
+            const clientId = getClientId();
+            try {
+              const response = await fetch('/api/like-work', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, clientId })
+              });
+
+              const payload = await response.json();
+              const countNode = button.querySelector('.like-count');
+              if (countNode) {
+                countNode.textContent = payload.likes;
+              }
+
+              if (payload.alreadyLiked) {
+                button.classList.add('liked');
+                button.setAttribute('disabled', 'disabled');
+                button.title = 'You already liked this work.';
+                return;
+              }
+
+              button.classList.add('liked');
+            } catch (error) {
+              console.error(error);
+            }
+          });
+        });
+      } catch (error) {
+        grid.innerHTML = '<div class="empty-state">Unable to load student works right now.</div>';
+      }
+    }
+
+    loadWorks();
+  </script>
+</body>
+</html>

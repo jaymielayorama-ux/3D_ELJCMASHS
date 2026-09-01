@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Review | ELJCMASHS</title>
+  <link rel="icon" type="image/png" href="images/logo.png.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-wrap">
+      <a class="brand" href="index.html" aria-label="ELJ home">
+        <img src="images/logo.png.png" alt="ELJ logo" class="brand-logo" />
+        <div>
+          <span class="brand-small">EUGENIO M. LOPEZ JR. CENTER FOR MEDIA ARTS SENIOR HIGH SCHOOL</span>
+          <span class="brand-title">OFFICIAL WEBSITE</span>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section page-shell">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> ADMIN REVIEW</p>
+        <h2>Student work submissions.</h2>
+        <p>Review each submission and approve only the work that should appear publicly on the website.</p>
+      </div>
+      <div id="adminList" class="admin-list"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    async function loadPendingWorks() {
+      const list = document.getElementById('adminList');
+      const response = await fetch('/api/pending');
+      const works = await response.json();
+
+      if (!works.length) {
+        list.innerHTML = '<div class="empty-state">No pending submissions.</div>';
+        return;
+      }
+
+      list.innerHTML = works.map((work) => `
+        <article class="admin-card">
+          <div class="admin-media">
+            ${/\.(png|jpe?g|gif|webp|svg)$/i.test(work.fileUrl || '')
+              ? `<img src="${work.fileUrl}" alt="${work.title}" />`
+              : `<video controls src="${work.fileUrl}"></video>`}
+          </div>
+          <div class="admin-body">
+            <span class="work-category">${work.category}</span>
+            <h3>${work.title}</h3>
+            <p><strong>Student:</strong> ${work.name}</p>
+            <p><strong>Email:</strong> ${work.email}</p>
+            <p>${work.description}</p>
+            <div class="admin-actions">
+              <button class="button button-primary" data-action="approve" data-id="${work.id}">Accept</button>
+              <button class="button button-secondary" data-action="reject" data-id="${work.id}">Reject</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      document.querySelectorAll('[data-action]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const id = button.getAttribute('data-id');
+          const action = button.getAttribute('data-action');
+
+          const result = await fetch(action === 'approve' ? '/api/approve-work' : '/api/reject-work', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, note: 'Rejected by admin.' })
+          });
+
+          if (result.ok) {
+            loadPendingWorks();
+          }
+        });
+      });
+    }
+
+    loadPendingWorks();
+  </script>
+</body>
+</html>

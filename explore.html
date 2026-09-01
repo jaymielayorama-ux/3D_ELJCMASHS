@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore the ELJ campus through the immersive 3D tour." />
+  <title>Explore | ELJCMASHS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="images/logo.png.png" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-wrap">
+      <a class="brand" href="index.html" aria-label="ELJ home">
+        <img src="images/logo.png.png" alt="ELJ logo" class="brand-logo" />
+        <div>
+          <span class="brand-small">EUGENIO M. LOPEZ JR. CENTER FOR MEDIA ARTS SENIOR HIGH SCHOOL</span>
+          <span class="brand-title">OFFICIAL WEBSITE</span>
+        </div>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <nav id="siteNav" class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="about.html">About</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+      <a href="student-works.html">Student Works</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section explore-section page-shell">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> CAMPUS TOUR</p>
+        <h2>Explore the ELJ campus.</h2>
+        <p>Navigate the spaces where creativity, media arts, and student life come together.</p>
+      </div>
+
+      <div class="viewer-shell">
+        <div class="viewer-toolbar">
+          <span class="viewer-status" id="viewerStatus">
+            <span class="status-dot"></span> 3D VIEW
+          </span>
+          <button id="resetView" class="tool-button" type="button" title="Reset camera">Reset View</button>
+        </div>
+
+        <div id="canvas-wrap" class="canvas-wrap">
+          <div id="loading" class="loading-panel">
+            <div class="spinner"></div>
+            <p>Loading ELJ campus…</p>
+          </div>
+        </div>
+
+        <div class="viewer-tip">
+          <strong>Controls</strong>
+          <span>Left-drag: rotate</span>
+          <span>Wheel / pinch: zoom</span>
+          <span>Right-drag: move</span>
+        </div>
+      </div>
+
+      <div class="locations">
+        <div class="location-heading">
+          <p class="eyebrow"><span></span> CAMPUS LOCATIONS</p>
+          <h3>Choose a place to explore</h3>
+        </div>
+
+      <div class="location-grid">
+          <div class="floor-row floor-1">
+            <div class="floor-label">Floor 1</div>
+            <button class="location-card" type="button" data-location="main">
+              <span class="location-icon">101</span>
+              <span>
+                <strong>Ground Floor</strong>
+                <small>Central campus area where students gather</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+            <button class="location-card" type="button" data-location="faculty">
+              <span class="location-icon">102</span>
+              <span>
+                <strong>Faculty</strong>
+                <small>Teachers and administration</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+            <button class="location-card" type="button" data-location="canteen">
+              <span class="location-icon">103</span>
+              <span>
+                <strong>Canteen</strong>
+                <small>Student dining and break area</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+             <button class="location-card" type="button" data-location="theater-room">
+              <span class="location-icon">104</span>
+              <span>
+                <strong>Theater Room</strong>
+                <small>Performance and production</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+
+          <div class="floor-row floor-2">
+
+                        <button class="location-card" type="button" data-location="library">
+              <span class="location-icon">201</span>
+              <span>
+                <strong>Library</strong>
+                <small>Learning and study space</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+            
+            <div class="floor-label">Floor 2</div>
+            <button class="location-card" type="button" data-location="media-room">
+              <span class="location-icon">202</span>
+              <span>
+                <strong>Media Laboratory</strong>
+                <small>Creative media workspace</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+            <button class="location-card" type="button" data-location="speech-lab">
+              <span class="location-icon">203</span>
+              <span>
+                <strong>Speech Laboratory</strong>
+                <small>Communication and voice practice</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+             <button class="location-card" type="button" data-location="schooladmin-lab">
+              <span class="location-icon">204</span>
+              <span>
+                <strong>School Administration</strong>
+                <small>Administrative and support services</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+<button class="location-card" type="button" data-location="friendship-lab">
+              <span class="location-icon">205</span>
+              <span>
+                <strong>Friendship Area</strong>
+                <small>Social and community building</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+            
+          </div>
+
+          <div class="floor-row floor-3">
+            <div class="floor-label">Floor 3</div>
+
+            <button class="location-card" type="button" data-location="ecrew-room">
+              <span class="location-icon">305</span>
+              <span>
+                <strong>E-Crew Room</strong>
+                <small>Creative event support</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+             <button class="location-card" type="button" data-location="science-lab">
+              <span class="location-icon">306</span>
+              <span>
+                <strong>Science Laboratory</strong>
+                <small>Scientific experimentation and learning</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+
+          <div class="floor-row floor-4">
+            <div class="floor-label">Floor 4</div>
+            <button class="location-card" type="button" data-location="prop-room">
+              <span class="location-icon">404</span>
+              <span>
+                <strong>Props Room</strong>
+                <small>Set and production materials</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+ <button class="location-card" type="button" data-location="comp-lab">
+              <span class="location-icon">407</span>
+              <span>
+                <strong>Computer Laboratory</strong>
+                <small>Computer and digital learning</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+            <button class="location-card" type="button" data-location="haraya-room">
+              <span class="location-icon">403</span>
+              <span>
+                <strong>Haraya Room</strong>
+                <small>Creative arts and imagination</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+             <button class="location-card" type="button" data-location="vanguard-room">
+              <span class="location-icon">402</span>
+              <span>
+                <strong>The VANGUARD Room</strong>
+                <small>Leadership and student initiatives</small>
+              </span>
+              <span class="arrow">→</span>
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="locationDialog" class="location-dialog" aria-labelledby="dialogTitle">
+    <div class="dialog-header">
+      <div>
+        <p class="dialog-kicker">Campus Space</p>
+        <h3 id="dialogTitle">Selected location</h3>
+      </div>
+      <button id="closeDialog" class="close-button close-dialog" type="button" aria-label="Close dialog">×</button>
+    </div>
+    <div id="dialogBody" class="dialog-body"></div>
+  </dialog>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

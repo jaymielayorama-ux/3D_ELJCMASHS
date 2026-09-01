@@ -1,45 +1,101 @@
-# ELJ 3D Campus Website
+# ELJCMASHS Official Website
 
-Beginner-friendly static website prototype for the ELJCMASHS interactive 3D campus exhibition.
+A modern school website for ELJCMASHS with:
+- interactive 3D campus exploration
+- admissions, about, and contact pages
+- student works gallery
+- student submission + admin approval workflow
+- email notifications through Resend
 
-## Folder structure
+## Project structure
 
 ```text
-elj-3d-campus/
+3D_ELJCMASHS/
 ├── index.html
+├── about.html
+├── admissions.html
+├── contact.html
+├── explore.html
+├── student-works.html
+├── upload-work.html
+├── admin.html
 ├── style.css
 ├── script.js
-└── models/
-    └── elj-campus.glb   <-- PUT YOUR 3D MODEL HERE
+├── server.js
+├── package.json
+├── .gitignore
+├── images/
+├── model/
+├── uploads/   (generated locally)
+├── data.json  (generated locally)
+└── .env       (local only; do not commit)
 ```
 
-## How to test it
+## Local development
 
-Because browsers can block some local module/file requests, use a small local web server instead of double-clicking `index.html`.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create a `.env` file in the project root with:
+   ```env
+   ADMIN_EMAIL=your_admin_email@example.com
+   RESEND_API_KEY=your_resend_key
+   RESEND_FROM_EMAIL=onboarding@resend.dev
+   PUBLIC_BASE_URL=http://localhost:3000
+   ```
+3. Start the app:
+   ```bash
+   node server.js
+   ```
+4. Open the site in your browser at:
+   ```text
+   http://localhost:3000
+   ```
 
-Easy option if you have VS Code:
-1. Install the "Live Server" extension.
-2. Open this folder in VS Code.
-3. Right-click `index.html`.
-4. Choose "Open with Live Server".
+## Features
 
-Or use any simple local HTTP server.
+### Static website pages
+- Home
+- Explore
+- About
+- Admissions
+- Contact
+- Student Works
 
-## How to add your 3D model
+### Student Works workflow
+- Students can submit a work through the upload form
+- Admin can review pending submissions
+- Approved works appear in the public gallery
+- Rejected works are not published
+- Each approved work supports a like button
 
-1. Export/convert your school model to `.glb`.
-2. Rename it exactly:
-   `elj-campus.glb`
-3. Put it inside:
-   `models/`
-4. Refresh the website.
+### Email approval flow
+- A new submission sends an email to the admin
+- The email includes approve/reject actions
+- The public base URL is configured through `PUBLIC_BASE_URL`
 
-## Important
+## Deployment to Render
 
-The location buttons currently open information panels. They do NOT yet detect clicks directly on individual 3D buildings.
+1. Push the repository to GitHub.
+2. In Render, create a new Web Service.
+3. Connect the GitHub repo.
+4. Use these settings:
+   - Build Command: `npm install`
+   - Start Command: `node server.js`
+5. Add environment variables:
+   - `ADMIN_EMAIL`
+   - `RESEND_API_KEY`
+   - `RESEND_FROM_EMAIL`
+   - `PUBLIC_BASE_URL=https://your-render-app-name.onrender.com`
+6. Deploy the service.
 
-The next development step is to give individual model parts identifiable names (for example `Library`, `Theater`, `Media_Laboratory`) and use a Three.js raycaster so users can click the actual building in the 3D scene.
+## Production note
 
-## GitHub Pages
+This app currently stores uploaded files locally in the `uploads/` directory. For a production deployment, it is better to move uploaded files to a hosted storage solution such as Cloudinary or Supabase Storage to avoid file loss on restarts.
 
-This is a static HTML/CSS/JavaScript website, so it can be hosted through GitHub Pages. The repository should contain `index.html` at the publishing source's top level.
+## Notes
+
+- The 3D model should live in `model/ELJ-MODEL.glb` if you want the campus viewer to work.
+- The app expects a local server or deployed Node server; opening HTML pages directly with `file://` is not supported for uploads.
+- `data.json` is generated automatically on first run and should be ignored in Git.

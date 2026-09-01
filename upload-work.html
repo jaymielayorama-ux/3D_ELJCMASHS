@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Student Work | ELJCMASHS</title>
+  <link rel="icon" type="image/png" href="images/logo.png.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-wrap">
+      <a class="brand" href="index.html" aria-label="ELJ home">
+        <img src="images/logo.png.png" alt="ELJ logo" class="brand-logo" />
+        <div>
+          <span class="brand-small">EUGENIO M. LOPEZ JR. CENTER FOR MEDIA ARTS SENIOR HIGH SCHOOL</span>
+          <span class="brand-title">OFFICIAL WEBSITE</span>
+        </div>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav id="siteNav" class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="about.html">About</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+      <a href="student-works.html">Student Works</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section page-shell form-shell">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> SUBMIT A WORK</p>
+        <h2>Share your student work.</h2>
+        <p>All submissions are reviewed before they appear on the website.</p>
+      </div>
+
+      <form id="uploadForm" class="student-form" enctype="multipart/form-data">
+        <div class="form-row two-col">
+          <label>
+            Full Name
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            Email Address
+            <input type="email" name="email" required placeholder="your@email.com" />
+          </label>
+        </div>
+
+        <div class="form-row two-col">
+          <label>
+            Title of Work
+            <input type="text" name="title" required />
+          </label>
+          <label>
+            Category
+            <select name="category" required>
+              <option value="">Select category</option>
+              <option>Photography</option>
+              <option>Video</option>
+              <option>Digital Art</option>
+              <option>Poster Design</option>
+              <option>Writing</option>
+              <option>Audio</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          Short Description
+          <textarea name="description" rows="5" required></textarea>
+        </label>
+
+        <label>
+          Submission Type
+          <select name="mediaType" id="mediaType" required>
+            <option value="upload">Upload a file</option>
+            <option value="youtube">YouTube link</option>
+            <option value="link">Other video link</option>
+          </select>
+        </label>
+
+        <div id="uploadFieldWrap">
+          <label>
+            Upload File
+            <input type="file" name="file" id="fileInput" />
+          </label>
+        </div>
+
+        <div id="videoLinkWrap" style="display:none;">
+          <label>
+            Video Link
+            <input type="url" name="videoUrl" id="videoUrlInput" placeholder="https://..." />
+          </label>
+        </div>
+
+        <label class="checkbox-wrap">
+          <input type="checkbox" required />
+          <span>I confirm the work is mine and I allow it to be reviewed for website publication.</span>
+        </label>
+
+        <button type="submit" class="button button-primary">Submit for approval</button>
+        <p id="formMessage" class="form-message"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById('uploadForm');
+    const message = document.getElementById('formMessage');
+    const mediaType = document.getElementById('mediaType');
+    const videoLinkWrap = document.getElementById('videoLinkWrap');
+    const uploadFieldWrap = document.getElementById('uploadFieldWrap');
+    const fileInput = document.getElementById('fileInput');
+    const videoUrlInput = document.getElementById('videoUrlInput');
+
+    const toggleMediaFields = () => {
+      const value = mediaType.value;
+      const isLink = value === 'youtube' || value === 'link';
+      videoLinkWrap.style.display = isLink ? 'block' : 'none';
+      uploadFieldWrap.style.display = isLink ? 'none' : 'block';
+      fileInput.required = !isLink;
+      videoUrlInput.required = isLink;
+    };
+
+    mediaType.addEventListener('change', toggleMediaFields);
+    toggleMediaFields();
+
+    const showFormLoader = (active) => {
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (!submitButton) return;
+
+      submitButton.disabled = active;
+      submitButton.textContent = active ? 'Submitting...' : 'Submit for approval';
+      submitButton.style.opacity = active ? '0.8' : '1';
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+
+      showFormLoader(true);
+      message.textContent = 'Submitting...';
+      message.classList.remove('error');
+
+      try {
+        const response = await fetch('/api/submit-work', {
+          method: 'POST',
+          body: formData
+        });
+
+        const text = await response.text();
+        let result = {};
+
+        try {
+          result = text ? JSON.parse(text) : {};
+        } catch (jsonError) {
+          if (response.status === 403 || response.type === 'opaque') {
+            throw new Error('This form must be opened from a local web server, not as a file. Please run the website through localhost first.');
+          }
+
+          throw new Error(text || 'Submission failed.');
+        }
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Submission failed.');
+        }
+
+        message.textContent = result.message;
+        form.reset();
+        toggleMediaFields();
+      } catch (error) {
+        message.textContent = error.message;
+        message.classList.add('error');
+      } finally {
+        showFormLoader(false);
+      }
+    });
+  </script>
+</body>
+</html>

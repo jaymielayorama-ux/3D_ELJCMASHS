@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ELJCMASHS 3D Campus — an interactive digital campus exhibition." />
-  <title>ELJ 3D Campus | Interactive Exhibition</title>
+  <meta name="description" content="ELJCMASHS official website — campus tour, admissions, and school information." />
+  <title>ELJCMASHS | Official School Website</title>
 
   <!-- Three.js import map. No installation needed for this beginner prototype. -->
   <script type="importmap">
@@ -19,198 +19,347 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="images/logo.png.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="ELJ 3D Campus home">
-      <div class="brand-mark" aria-hidden="true">
-        <span class="mark-red"></span>
-        <span class="mark-green"></span>
-        <span class="mark-blue"></span>
-      </div>
-      <div>
-        <span class="brand-small">EUGENIO M. LOPEZ JR.</span>
-        <span class="brand-title">3D CAMPUS</span>
-      </div>
-    </a>
+    <div class="brand-wrap">
+      <a class="brand" href="index.html" aria-label="ELJ 3D Campus home">
+        <img src="images/logo.png.png" alt="ELJ logo" class="brand-logo" />
+        <div>
+          <span class="brand-small">EUGENIO M. LOPEZ JR. CENTER FOR MEDIA ARTS SENIOR HIGH SCHOOL</span>
+          <span class="brand-title">OFFICIAL WEBSITE</span>
+        </div>
+      </a>
 
-    <nav class="nav" aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#explore">Explore</a>
-      <a href="#about">About</a>
-      <a href="#accessibility">Accessibility</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <nav id="siteNav" class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="about.html">About</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+      <a href="student-works.html">Student Works</a>
     </nav>
   </header>
 
   <main>
     <section id="home" class="hero">
       <div class="hero-copy">
-        <p class="eyebrow"><span></span> ELJCMASHS DIGITAL EXHIBITION</p>
-        <h1>Explore <em>ELJ</em> in 3D.</h1>
+        <p class="eyebrow"><span></span> WELCOME TO ELJCMASHS</p>
+        <h1>Where <em id="creativityEgg" class="easter-egg-trigger">creativity</em> meets practicality.</h1>
         <p class="hero-text">
-          An interactive digital representation of the Eugenio M. Lopez Jr.
-          Center for Media Arts Senior High School campus.
+          ELJCMASHS is a dynamic learning community where students grow through media,
+          communication, and innovation. Explore our campus, discover our programs, and
+          learn how to be part of the #EUgenians community.
         </p>
+
+        <div class="hero-badges" aria-label="School values">
+          <span class="hero-badge badge-red">PUBLIC</span>
+          <span class="hero-badge badge-green">ART SCHOOL</span>
+          <span class="hero-badge badge-blue">COMMUNITY</span>
+        </div>
+
         <div class="hero-actions">
-          <a class="button button-primary" href="#explore">Explore Campus</a>
-          <a class="button button-secondary" href="#about">Learn More</a>
+          <a class="button button-primary" href="explore.html">Virtual Campus Tour</a>
+          <a class="button button-secondary" href="admissions.html">Admissions</a>
         </div>
       </div>
 
-      <div class="hero-art" aria-hidden="true">
-        <div class="shape shape-red"></div>
-        <div class="shape shape-green"></div>
-        <div class="shape shape-blue"></div>
-        <div class="shape shape-white"></div>
+      <div class="hero-art" aria-label="ELJ campus building" role="img">
+        <div class="hero-spotlight">
+          <span class="spotlight-label">ELJ Community</span>
+          <strong>Media • Arts • Leadership</strong>
+          <p>Creative learning, student voice, and campus culture in one vibrant community.</p>
+        </div>
       </div>
     </section>
 
-    <section id="explore" class="section explore-section">
+    <section class="section feature-section">
       <div class="section-heading">
-        <p class="eyebrow"><span></span> INTERACTIVE CAMPUS</p>
-        <h2>Explore the 3D model</h2>
-        <p>Drag to rotate, scroll or pinch to zoom, and click a highlighted location to learn more.</p>
+        <p class="eyebrow"><span></span> WHY ELJ</p>
+        <h2>Where art, media, and imagination come alive.</h2>
+        <p>ELJCMASHS is a media arts community where students learn by making, creating, and telling stories that move people and shape culture.</p>
       </div>
 
-      <div class="viewer-shell">
-        <div class="viewer-toolbar">
-          <span class="viewer-status" id="viewerStatus">
-            <span class="status-dot"></span> 3D VIEW
-          </span>
-          <button id="resetView" class="tool-button" type="button" title="Reset camera">Reset View</button>
-        </div>
+      <div class="feature-grid">
+        <article class="feature-card feature-card-red">
+          <span class="feature-icon">✦</span>
+          <h3>Creative-first education</h3>
+          <p>Students learn by creating, experimenting, and building ideas through design, storytelling, and media practice.</p>
+        </article>
+        <article class="feature-card feature-card-gold">
+          <span class="feature-icon">▣</span>
+          <h3>Practical media training</h3>
+          <p>From journalism to digital storytelling and visual communication, ELJ builds real-world creative skills early.</p>
+        </article>
+        <article class="feature-card feature-card-blue">
+          <span class="feature-icon">◎</span>
+          <h3>Student voice and publications</h3>
+          <p>Haraya and The VANGUARD give students a platform to shape campus stories, visuals, and perspectives.</p>
+        </article>
+        <article class="feature-card feature-card-green">
+          <span class="feature-icon">◇</span>
+          <h3>Strong campus culture</h3>
+          <p>Through clubs, collaboration, and leadership opportunities, students grow bold, confident, and connected.</p>
+        </article>
+      </div>
+    </section>
 
-        <div id="canvas-wrap" class="canvas-wrap">
-          <div id="loading" class="loading-panel">
-            <div class="spinner"></div>
-            <p>Loading ELJ campus…</p>
+    <section id="clubs" class="section clubs-section">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> CLUBS</p>
+        <h2>Discover ELJ clubs</h2>
+        <p>Explore the student organizations and communities that make ELJ vibrant and creative.</p>
+      </div>
+
+      <div class="clubs-grid">
+        <article class="club-group group-sphere">
+          <div class="club-group-header">
+            <span class="group-badge">SPHERE</span>
           </div>
+          <div class="club-list">
+            <a class="club-item" href="https://www.facebook.com/ELJCMASHSGenderAndDevelopment" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/ELJCMASHSGenderAndDevelopment/picture?type=large" alt="GAD profile picture" loading="lazy">
+              <span class="club-text">GAD (Gender and Development)</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/profile.php?id=61551089518718" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/61551089518718/picture?type=large" alt="EUr Sports profile picture" loading="lazy">
+              <span class="club-text">EUr Sports</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/ELJSPRCY" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/ELJSPRCY/picture?type=large" alt="SPRCY profile picture" loading="lazy">
+              <span class="club-text">SPRCY (Senior Plus Red Cross Youth)</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/eugeniodebatesociety" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/eugeniodebatesociety/picture?type=large" alt="EDS profile picture" loading="lazy">
+              <span class="club-text">EDS (Eugenio Debate Society)</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/yes.o.eu.eljcmashs" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/yes.o.eu.eljcmashs/picture?type=large" alt="YES-O profile picture" loading="lazy">
+              <span class="club-text">YES-O</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/apolloelj" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/apolloelj/picture?type=large" alt="APOLLO profile picture" loading="lazy">
+              <span class="club-text">APOLLO</span>
+              <span class="club-arrow">→</span>
+            </a>
+          </div>
+        </article>
 
-          <noscript>
-            <div class="fallback-card">
-              JavaScript is required for the interactive 3D viewer.
-            </div>
-          </noscript>
-        </div>
+        <article class="club-group group-sinta">
+          <div class="club-group-header">
+            <span class="group-badge">SINTA</span>
+          </div>
+          <div class="club-list">
+            <a class="club-item" href="https://www.facebook.com/Theatrogenio" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/Theatrogenio/picture?type=large" alt="Theatrogenio profile picture" loading="lazy">
+              <span class="club-text">Theatrogenio</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/weletthemusicspeak" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/weletthemusicspeak/picture?type=large" alt="MediaTones profile picture" loading="lazy">
+              <span class="club-text">MediaTones</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/EugenioDanceCrew" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/EugenioDanceCrew/picture?type=large" alt="E-crew profile picture" loading="lazy">
+              <span class="club-text">E-crew</span>
+              <span class="club-arrow">→</span>
+            </a>
+          </div>
+        </article>
 
-        <div class="viewer-tip">
-          <strong>Controls</strong>
-          <span>Left-drag: rotate</span>
-          <span>Wheel / pinch: zoom</span>
-          <span>Right-drag: move</span>
-        </div>
+        <article class="club-group group-madss">
+          <div class="club-group-header">
+            <span class="group-badge">MADSS</span>
+          </div>
+          <div class="club-list">
+            <a class="club-item" href="https://www.facebook.com/officialeljtv" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/officialeljtv/picture?type=large" alt="ELJ TV profile picture" loading="lazy">
+              <span class="club-text">ELJ TV</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/LikhenioVisualArtCreatives" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/LikhenioVisualArtCreatives/picture?type=large" alt="Likhenio profile picture" loading="lazy">
+              <span class="club-text">Likhenio</span>
+              <span class="club-arrow">→</span>
+            </a>
+            <a class="club-item" href="https://www.facebook.com/CineEugenioOfficial" target="_blank" rel="noopener noreferrer">
+              <img class="club-avatar" src="https://graph.facebook.com/CineEugenioOfficial/picture?type=large" alt="CineEu profile picture" loading="lazy">
+              <span class="club-text">CineEu</span>
+              <span class="club-arrow">→</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="publications" class="section publication-section">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> PUBLICATION</p>
+        <p>Creative student publications that share stories, ideas, and campus culture.</p>
       </div>
 
-      <div class="locations">
-        <div class="location-heading">
-          <p class="eyebrow"><span></span> CAMPUS LOCATIONS</p>
-          <h3>Choose a place to explore</h3>
+      <div class="publication-grid">
+        <a class="publication-card publication-haraya" href="https://www.facebook.com/HarayaELJCMASHS" target="_blank" rel="noopener noreferrer">
+          <div class="publication-top">
+            <img class="publication-avatar" src="https://graph.facebook.com/HarayaELJCMASHS/picture?type=large" alt="Haraya profile picture" loading="lazy">
+            <span class="publication-label">Haraya</span>
+          </div>
+          <strong>Haraya</strong>
+          <p>Ang Opisyal na Publikasyong Pampaaralan ng Eugenio M. Lopez Jr. Center for Media Arts Senior High School</p>
+        </a>
+
+        <a class="publication-card publication-vanguard" href="https://www.facebook.com/thevanguardelj" target="_blank" rel="noopener noreferrer">
+          <div class="publication-top">
+            <img class="publication-avatar" src="https://graph.facebook.com/thevanguardelj/picture?type=large" alt="The Vanguard profile picture" loading="lazy">
+            <span class="publication-label">Vanguard</span>
+          </div>
+          <strong>The VANGUARD</strong>
+          <p>The Official Student Publication of Eugenio M. Lopez Jr. Center for Media Arts Senior High School.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section feature-section">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> WHY ELJ</p>
+        <h2>Where art, media, and imagination come alive.</h2>
+        <p>ELJCMASHS is a media arts community where students learn by making, creating, and telling stories that move people and shape culture.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card feature-card-red">
+          <span class="feature-icon">✦</span>
+          <h3>Creative-first education</h3>
+          <p>Students learn by creating, experimenting, and building ideas through design, storytelling, and media practice.</p>
+        </article>
+        <article class="feature-card feature-card-gold">
+          <span class="feature-icon">▣</span>
+          <h3>Practical media training</h3>
+          <p>From journalism to digital storytelling and visual communication, ELJ builds real-world creative skills early.</p>
+        </article>
+        <article class="feature-card feature-card-blue">
+          <span class="feature-icon">◎</span>
+          <h3>Student voice and publications</h3>
+          <p>Haraya and The VANGUARD give students a platform to shape campus stories, visuals, and perspectives.</p>
+        </article>
+        <article class="feature-card feature-card-green">
+          <span class="feature-icon">◇</span>
+          <h3>Strong campus culture</h3>
+          <p>Through clubs, collaboration, and leadership opportunities, students grow bold, confident, and connected.</p>
+        </article>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item stat-item-red">
+          <strong>5+</strong>
+          <span>Years of media arts education</span>
         </div>
-
-        <div class="location-grid">
-          <button class="location-card" type="button" data-location="main">
-            <span class="location-icon icon-red">01</span>
-            <span>
-              <strong>Main Building</strong>
-              <small>Central campus area</small>
-            </span>
-            <span class="arrow">→</span>
-          </button>
-
-          <button class="location-card" type="button" data-location="library">
-            <span class="location-icon icon-blue">02</span>
-            <span>
-              <strong>Library</strong>
-              <small>Learning and study space</small>
-            </span>
-            <span class="arrow">→</span>
-          </button>
-
-          <button class="location-card" type="button" data-location="theater">
-            <span class="location-icon icon-green">03</span>
-            <span>
-              <strong>Theater</strong>
-              <small>Performance and production</small>
-            </span>
-            <span class="arrow">→</span>
-          </button>
-
-          <button class="location-card" type="button" data-location="media">
-            <span class="location-icon icon-mix">04</span>
-            <span>
-              <strong>Media Laboratory</strong>
-              <small>Creative media production</small>
-            </span>
-            <span class="arrow">→</span>
-          </button>
+        <div class="stat-item stat-item-gold">
+          <strong>200+</strong>
+          <span>Student creatives and leaders</span>
         </div>
+        <div class="stat-item stat-item-blue">
+          <strong>15</strong>
+          <span>Student organizations and publications</span>
+        </div>
+        <div class="stat-item stat-item-green">
+          <strong>100%</strong>
+          <span>Focus on creativity, communication, and growth</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="showcase" class="section showcase-section">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> STUDENT SHOWCASE</p>
+        <h2>Stories, visuals, and voices from ELJ.</h2>
+        <p>See how students shape ideas into impactful work across media, design, and publication.</p>
+      </div>
+
+      <div class="showcase-grid">
+        <article class="showcase-card showcase-card-large">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Student media project workflow" loading="lazy" />
+          <div class="showcase-copy">
+            <span class="showcase-tag">Media Arts</span>
+            <h3>Student-led storytelling</h3>
+            <p>From interviews to digital publishing, ELJ students transform ideas into stories that connect and inspire.</p>
+          </div>
+        </article>
+
+        <article class="showcase-card">
+          <img src="https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1200&q=80" alt="Student design and editing workstation" loading="lazy" />
+          <div class="showcase-copy">
+            <span class="showcase-tag">Design</span>
+            <h3>Visual communication</h3>
+            <p>Creative thinking comes alive through thoughtful design, editing, and multimedia production.</p>
+          </div>
+        </article>
+
+        <article class="showcase-card">
+          <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80" alt="Students collaborating in a creative workspace" loading="lazy" />
+          <div class="showcase-copy">
+            <span class="showcase-tag">Collaboration</span>
+            <h3>Shared campus energy</h3>
+            <p>ELJ thrives on teamwork, leadership, and student voices building meaningful campus experiences.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section testimonial-section">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> STUDENT VOICES</p>
+        <h2>What students say about ELJ.</h2>
+      </div>
+
+      <div class="testimonial-grid">
+        <blockquote class="testimonial-card">
+          <p>“ELJ helped me discover my voice as a storyteller. The school pushes students to create, think critically, and lead with confidence.”</p>
+          <footer>— Student, Media Arts Program</footer>
+        </blockquote>
+        <blockquote class="testimonial-card">
+          <p>“The campus culture is creative, collaborative, and empowering. Every space feels built for learning and expression.”</p>
+          <footer>— Student Leader, ELJ Community</footer>
+        </blockquote>
       </div>
     </section>
 
     <section id="about" class="section about-section">
       <div class="about-card">
         <div>
-          <p class="eyebrow"><span></span> ABOUT THE PROJECT</p>
-          <h2>A campus you can explore online.</h2>
+          <p class="eyebrow"><span></span> ABOUT ELJCMASHS</p>
+          <h2>Shaping future media leaders.</h2>
         </div>
         <p>
-          This prototype presents the ELJ campus as an interactive 3D digital
-          exhibition. Replace the sample location text with your research,
-          photographs, videos, and other campus information.
+          ELJCMASHS is committed to nurturing students who are creative, critical, and confident in media and communication.
+          Through a learner-centered approach, we help students build skills in journalism, digital storytelling, leadership,
+          and community engagement while preparing them for future opportunities.
         </p>
       </div>
     </section>
-
-    <section id="accessibility" class="section accessibility-section">
-      <div class="section-heading">
-        <p class="eyebrow"><span></span> ACCESSIBILITY</p>
-        <h2>More than a 3D model.</h2>
-        <p>
-          Keep important information available in multiple formats so visitors
-          are not dependent on the 3D interface alone.
-        </p>
-      </div>
-
-      <div class="access-grid">
-        <article class="access-card">
-          <div class="access-number">A</div>
-          <h3>Text alternative</h3>
-          <p>Provide written descriptions for every important location.</p>
-        </article>
-        <article class="access-card">
-          <div class="access-number">B</div>
-          <h3>Audio description</h3>
-          <p>Add optional narration for visitors who prefer listening.</p>
-        </article>
-        <article class="access-card">
-          <div class="access-number">C</div>
-          <h3>Keyboard-friendly controls</h3>
-          <p>Make buttons and important navigation usable without a mouse.</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <!-- Location information dialog -->
-  <dialog id="locationDialog" class="location-dialog" aria-labelledby="dialogTitle">
-    <div class="dialog-header">
-      <div>
-        <p class="eyebrow"><span></span> CAMPUS LOCATION</p>
-        <h2 id="dialogTitle">Location</h2>
-      </div>
-      <button id="closeDialog" class="close-button" type="button" aria-label="Close">×</button>
-    </div>
-    <div id="dialogBody" class="dialog-body"></div>
-  </dialog>
 
   <footer class="site-footer">
     <div>
-      <strong>ELJ 3D CAMPUS</strong>
+      <strong>ELJCMASHS</strong>
       <p>Eugenio M. Lopez Jr. Center for Media Arts Senior High School</p>
     </div>
-    <p class="footer-note">Interactive exhibition prototype</p>
+    <p class="footer-note">Official School Website</p>
   </footer>
 
   <script type="module" src="script.js"></script>
