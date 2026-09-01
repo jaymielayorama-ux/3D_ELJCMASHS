@@ -318,8 +318,8 @@ app.post('/api/submit-work', upload.single('file'), async (req, res) => {
     finalThumbnailUrl = buildThumbnailFromUrl(videoUrl);
     finalFileName = title;
   } else {
-   
-    const uploadedData = file ? await uploadToCloudinary(file, body) : null; 
+    // TAMANG PAG-UPDATE: Ipinapasa na natin ang body data para mai-save ang text metadata sa cloud storage
+    const uploadedData = file ? await uploadToCloudinary(file, body) : null;
 
     if (!file && !uploadedData) {
       return res.status(400).json({ message: 'Please upload a file or provide a video link.' });
@@ -328,7 +328,7 @@ app.post('/api/submit-work', upload.single('file'), async (req, res) => {
     finalFileUrl = uploadedData ? uploadedData.url : `/uploads/${file.filename}`;
     finalThumbnailUrl = finalFileUrl;
     finalFileName = file ? file.originalname : title;
-
+  }
 
   const submission = {
     id: String(Date.now()),
@@ -358,6 +358,7 @@ app.post('/api/submit-work', upload.single('file'), async (req, res) => {
     id: submission.id
   });
 });
+
 
 app.get('/api/pending', (req, res) => {
   const data = readData();
