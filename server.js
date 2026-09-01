@@ -58,6 +58,7 @@ app.get('/api/get-uploaded-images', async (req, res) => {
     console.error("Cloudinary fetch error:", error);
     res.status(500).json({ success: false, message: "Hindi makuha ang images mula sa Cloudinary" });
   }
+}); 
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
