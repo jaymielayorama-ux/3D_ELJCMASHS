@@ -210,16 +210,41 @@ async function sendApprovalEmail(submission) {
   }
 }
 
-app.get('/api/works', (req, res) => {
-  const data = readData();
-  const approved = data.works
-    .filter((item) => item.status === 'approved')
-    .map((item) => ({
-      ...item,
-      likes: Number(item.likes || 0)
-    }));
+app.get('/api/works', async (req, res) => {
+  try {
+    // Direkta tayong maghahanap sa iyong Cloudinary folder!
+    const result = await cloudinary.search
+      .expression('folder:elj-student-works AND resource_type:image')
+      .sort_by('created_at', 'desc')
+      .max_results(100)
+      .execute();
 
-  res.json(approved);
+    // I-map natin ang resulta para maging tugma sa kailangan ng iyong frontend HTML/JS
+    const approved = result.resources.map((file) => {
+      // Kunin ang pangalan ng file mula sa filename nang walang folder prefix
+      const cleanTitle = file.filename.replace('elj-student-works/', '');
+      
+      return {
+        id: file.public_id,
+        status: 'approved',
+        name: 'Student Contributor',
+        title: cleanTitle || 'Student Work',
+        category: 'Image',
+        description: 'Ligtas na naka-store sa Cloudinary Cloud Studio.',
+        fileName: cleanTitle,
+        fileUrl: file.secure_url,       // Ibinabalik ang permanenteng HTTPS link
+        thumbnailUrl: file.secure_url,  // Gagamitin ng frontend para sa display
+        mediaType: 'upload',
+        createdAt: file.created_at,
+        likes: 0 // Magre-reset ang likes dahil walang permanenteng database
+      };
+    });
+
+    res.json(approved);
+  } catch (error) {
+    console.error('Cloudinary dynamic fetch failed:', error);
+    res.status(500).json({ message: 'Hindi makuha ang mga gawa mula sa Cloudinary.' });
+  }
 });
 
 app.post('/api/like-work', (req, res) => {
