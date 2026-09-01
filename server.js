@@ -137,7 +137,8 @@ function buildThumbnailFromUrl(url) {
   return '';
 }
 
-async function uploadToCloudinary(file) {
+// PALITAN MO ITONG FUNCTION NA ITO SA SERVER.JS MO:
+async function uploadToCloudinary(file, metadata = {}) {
   if (!file || !CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
     return null;
   }
@@ -145,10 +146,20 @@ async function uploadToCloudinary(file) {
   try {
     const result = await cloudinary.uploader.upload(file.path, {
       resource_type: 'auto',
-      folder: 'elj-student-works'
+      folder: 'elj-student-works',
+      // Dito natin itatago ang text data sa loob ng Cloudinary para ligtas sa Render crash!
+      context: {
+        studentName: metadata.name || 'Anonymous',
+        workTitle: metadata.title || 'Untitled',
+        workCategory: metadata.category || 'General',
+        workDesc: metadata.description || 'No description provided.'
+      }
     });
 
-    return result.secure_url || result.url || null;
+    return {
+      url: result.secure_url || result.url || null,
+      public_id: result.public_id
+    };
   } catch (error) {
     console.error('Cloudinary upload failed:', error);
     return null;
@@ -212,31 +223,30 @@ async function sendApprovalEmail(submission) {
 
 app.get('/api/works', async (req, res) => {
   try {
-    // Direkta tayong maghahanap sa iyong Cloudinary folder!
     const result = await cloudinary.search
       .expression('folder:elj-student-works AND resource_type:image')
+      .with_field('context') // KUKUNIN NATIN ANG MGA TEXTS NA TINAGO NATIN SA CLOUD
       .sort_by('created_at', 'desc')
       .max_results(100)
       .execute();
 
-    // I-map natin ang resulta para maging tugma sa kailangan ng iyong frontend HTML/JS
     const approved = result.resources.map((file) => {
-      // Kunin ang pangalan ng file mula sa filename nang walang folder prefix
-      const cleanTitle = file.filename.replace('elj-student-works/', '');
+      // Basahin ang itinagong context data, gumamit ng fallback kung wala pa (yung mga lumang upload)
+      const context = file.context || {};
       
       return {
         id: file.public_id,
         status: 'approved',
-        name: 'Student Contributor',
-        title: cleanTitle || 'Student Work',
-        category: 'Image',
-        description: 'Ligtas na naka-store sa Cloudinary Cloud Studio.',
-        fileName: cleanTitle,
-        fileUrl: file.secure_url,       // Ibinabalik ang permanenteng HTTPS link
-        thumbnailUrl: file.secure_url,  // Gagamitin ng frontend para sa display
+        name: context.studentName || 'Student Contributor',
+        title: context.workTitle || file.filename.replace('elj-student-works/', '') || 'Student Work',
+        category: context.workCategory || 'Image',
+        description: context.workDesc || 'Uploaded directly to cloud storage.',
+        fileName: file.filename,
+        fileUrl: file.secure_url,
+        thumbnailUrl: file.secure_url,
         mediaType: 'upload',
         createdAt: file.created_at,
-        likes: 0 // Magre-reset ang likes dahil walang permanenteng database
+        likes: 0
       };
     });
 
@@ -246,6 +256,7 @@ app.get('/api/works', async (req, res) => {
     res.status(500).json({ message: 'Hindi makuha ang mga gawa mula sa Cloudinary.' });
   }
 });
+
 
 app.post('/api/like-work', (req, res) => {
   const { id, clientId } = req.body || {};
@@ -307,16 +318,17 @@ app.post('/api/submit-work', upload.single('file'), async (req, res) => {
     finalThumbnailUrl = buildThumbnailFromUrl(videoUrl);
     finalFileName = title;
   } else {
-    const uploadedUrl = file ? await uploadToCloudinary(file) : null;
+   
+    const uploadedData = file ? await uploadToCloudinary(file, body) : null; 
 
-    if (!file && !uploadedUrl) {
+    if (!file && !uploadedData) {
       return res.status(400).json({ message: 'Please upload a file or provide a video link.' });
     }
 
-    finalFileUrl = uploadedUrl || `/uploads/${file.filename}`;
+    finalFileUrl = uploadedData ? uploadedData.url : `/uploads/${file.filename}`;
     finalThumbnailUrl = finalFileUrl;
     finalFileName = file ? file.originalname : title;
-  }
+
 
   const submission = {
     id: String(Date.now()),
