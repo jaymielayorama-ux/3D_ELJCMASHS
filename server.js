@@ -34,6 +34,31 @@ const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '';
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
 const likedBy = new Map();
 
+app.get('/api/get-uploaded-images', async (req, res) => {
+  try {
+    // Hihilingin natin kay Cloudinary ang mga files
+    const result = await cloudinary.search
+      .expression('resource_type:image') // Lahat ng klase ng images
+      // KUNG MAY SPECIFIC FOLDER KA, gamitin mo ito: .expression('folder:iyong_folder_name')
+      .sort_by('created_at', 'desc') // Pinakabagong upload ang mauuna
+      .max_results(50) // Limitahan natin sa 50 images muna para mabilis
+      .execute();
+
+    // Kukunin lang natin ang mga 'secure_url' mula sa bawat image na nahanap
+    const images = result.resources.map(file => ({
+      url: file.secure_url,
+      public_id: file.public_id,
+      created_at: file.created_at
+    }));
+
+    // Ipadala ang listahan ng images sa frontend
+    res.status(200).json({ success: true, data: images });
+
+  } catch (error) {
+    console.error("Cloudinary fetch error:", error);
+    res.status(500).json({ success: false, message: "Hindi makuha ang images mula sa Cloudinary" });
+  }
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
   api_key: process.env.CLOUDINARY_API_KEY || '',
