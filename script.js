@@ -209,6 +209,22 @@ if (canvasWrap) {
         }
       });
 
+      // Halimbawa sa Vanilla JavaScript o React fetch
+fetch('/api/get-uploaded-images')
+  .then(response => response.json())
+  .then(result => {
+    if (result.success) {
+      // Ang result.data ay naglalaman ng array ng mga images!
+      console.log("Heto na ang mga ligtas na images mo bhie:", result.data);
+      
+      // I-loop mo lang ito sa HTML mo, halimbawa:
+      // result.data.forEach(img => { 
+      //    someDiv.innerHTML += `<img src="${img.url}" />` 
+      // });
+    }
+  })
+  .catch(err => console.error("Error fetching images:", err));
+
       const box = new THREE.Box3().setFromObject(campusModel);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
